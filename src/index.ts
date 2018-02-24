@@ -1,5 +1,8 @@
+import S from "s-js";
 import { createTestComponent } from "./app/TestComponent";
 
-const component = createTestComponent();
+S.root(() => {
+  const component = createTestComponent();
 
-document.body.appendChild(component);
+  document.body.appendChild(component);
+});

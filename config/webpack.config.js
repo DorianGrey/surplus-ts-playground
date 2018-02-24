@@ -103,7 +103,7 @@ module.exports = (env = {}) => {
     plugins: [
       new NamedModulesPlugin(),
       new HotModuleReplacementPlugin(),
-      new NoEmitOnErrorsPlugin(),
+      // new NoEmitOnErrorsPlugin(),
       new EnvironmentPlugin({
         NODE_ENV: isDev ? "development" : "production",
         PUBLIC_URL: publicUrl

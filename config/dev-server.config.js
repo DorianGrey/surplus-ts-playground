@@ -10,12 +10,12 @@ module.exports = function(publicHost, port, publicPath) {
     hot: true,
     inline: true,
     stats: false,
-    host: "::",
+    // host: "::",
     publicPath,
     watchOptions: {
       ignored: /node_modules/
     },
-    public: `${publicHost}:${port}`,
+    // public: `${publicHost}:${port}`,
     overlay: {
       errors: true,
       warnings: false

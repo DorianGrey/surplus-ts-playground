@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as Surplus from "surplus";
+Surplus; // Expression is a workaround to prevent the module from being dropped ...
 import SArray from "s-array";
 import S, { DataSignal } from "s-js";
 import data from "surplus-mixin-data";
@@ -14,7 +15,7 @@ interface Todo {
   done: DataSignal<boolean>;
 }
 
-export function createTestComponent(): HTMLElement {
+export function createTestComponent() {
   const makeTodo = (t: TodoContent) =>
     ({
       // our Todo constructor
@@ -30,27 +31,23 @@ export function createTestComponent(): HTMLElement {
       newTitle(""); // clear new title
     };
 
-  /*
-    Inserting this block does not work yet:
-    {
-        todos.map(todo => (
-          <div>
-            <input type="checkbox" fn={data(todo.done)} />
-            <input type="text" fn={data(todo.title)} />
-            <a onClick={() => todos.remove(todo)}>&times;</a>
-          </div>
-        ))
-      }
-  */
-
-  const view = S.root(() => (
-    // declarative main view
+  const todoElem: (t: Todo) => JSX.Element = (todo: Todo) => (
     <div>
+      <input type="checkbox" fn={data(todo.done)} />
+      <input type="text" fn={data(todo.title)} />
+      <a onClick={() => todos.remove(todo)}>&times;</a>
+    </div>
+  );
+
+  // TODO: This part still causes a curious typing error, even though everything works fine ... ?!
+  const view = (
+    <article>
       <h2>Minimalist ToDos in Surplus</h2>
       <input type="text" fn={data(newTitle)} />
       <a onClick={addTodo}> + </a>
-    </div>
-  ));
+      {todos.map(todoElem)}
+    </article>
+  );
 
   return view;
 }
