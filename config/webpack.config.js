@@ -4,6 +4,10 @@ const { EnvironmentPlugin, NoEmitOnErrorsPlugin } = require("webpack");
 const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
 const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
 
+const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
+const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const paths = require("./paths");
@@ -57,7 +61,7 @@ const PLUGIN_HTML = function(isDev, publicUrl) {
 module.exports = (env = {}) => {
   const isDev = process.env.NODE_ENV !== "production";
 
-  return {
+  const config = {
     entry: {
       app: [
         require.resolve("webpack-dev-server/client") + "?/",
@@ -103,7 +107,7 @@ module.exports = (env = {}) => {
     plugins: [
       new NamedModulesPlugin(),
       new HotModuleReplacementPlugin(),
-      // new NoEmitOnErrorsPlugin(),
+      new NoEmitOnErrorsPlugin(),
       new EnvironmentPlugin({
         NODE_ENV: isDev ? "development" : "production",
         PUBLIC_URL: publicUrl
@@ -111,4 +115,37 @@ module.exports = (env = {}) => {
       PLUGIN_HTML(isDev, publicUrl)
     ]
   };
+
+  if (!isDev) {
+    config.entry.app = paths.appIndex;
+    config.output.filename = "static/js/[name].[chunkhash].js";
+    config.output.chunkFilename = "static/js/[name].[chunkhash].chunk.js";
+    config.plugins.push(
+      new CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: ({ resource }) => /node_modules/.test(resource)
+      }),
+      new CommonsChunkPlugin("runtime"),
+      new ModuleConcatenationPlugin(),
+      new UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          // This feature has been reported as buggy a few times, such as:
+          // https://github.com/mishoo/UglifyJS2/issues/1964
+          // We'll wait with enabling it by default until it is more solid.
+          reduce_vars: false
+        },
+        output: {
+          comments: false
+        },
+        sourceMap: true
+      })
+    );
+
+    config.plugins = config.plugins.filter(
+      e => !(e instanceof HotModuleReplacementPlugin)
+    );
+  }
+
+  return config;
 };
