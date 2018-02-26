@@ -32,21 +32,20 @@ export function createTestComponent() {
     };
 
   const todoElem: (t: Todo) => JSX.Element = (todo: Todo) => (
-    <div>
+    <li>
       <input type="checkbox" fn={data(todo.done)} />
       <input type="text" fn={data(todo.title)} />
       <a onClick={() => todos.remove(todo)}>&times;</a>
-    </div>
+    </li>
   );
 
-  // TODO: This part still causes a curious typing error, even though everything works fine ... ?!
   const view = (
-    <article>
+    <section>
       <h2>Minimalist ToDos in Surplus</h2>
       <input type="text" fn={data(newTitle)} />
       <a onClick={addTodo}> + </a>
-      {todos.map(todoElem)}
-    </article>
+      <ul>{todos.map(todoElem)}</ul>
+    </section>
   );
 
   return view;
