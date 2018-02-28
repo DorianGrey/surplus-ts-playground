@@ -1,6 +1,6 @@
 const paths = require("./paths");
 
-module.exports = function(publicHost, port, publicPath) {
+module.exports = function(port, publicPath) {
   return {
     historyApiFallback: true,
     clientLogLevel: "none",

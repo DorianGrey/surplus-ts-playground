@@ -1,12 +1,7 @@
 const path = require("path");
 
-const { EnvironmentPlugin, NoEmitOnErrorsPlugin } = require("webpack");
+const { EnvironmentPlugin } = require("webpack");
 const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
-const NamedModulesPlugin = require("webpack/lib/NamedModulesPlugin");
-
-const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
-const UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
-const ModuleConcatenationPlugin = require("webpack/lib/optimize/ModuleConcatenationPlugin");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -62,17 +57,14 @@ module.exports = (env = {}) => {
   const isDev = process.env.NODE_ENV !== "production";
 
   const config = {
+    mode: process.env.NODE_ENV || "development",
     entry: {
-      app: [
-        require.resolve("webpack-dev-server/client") + "?/",
-        require.resolve("webpack/hot/dev-server"),
-        paths.appIndex
-      ]
+      app: [paths.appIndex]
     },
     output: {
       path: paths.appBuild,
-      filename: "static/js/bundle.js",
-      chunkFilename: "static/js/[name].chunk.js",
+      filename: "static/js/app.js",
+      chunkFilename: "static/js/[name].js",
       publicPath: publicPath,
       pathinfo: true,
       // Point sourcemap entries to original disk location
@@ -102,12 +94,8 @@ module.exports = (env = {}) => {
     },
     devtool: isDev ? "inline-source-map" : "source-map",
 
-    devServer: devServerConfig(PUBLIC_ADDRESS, DEFAULT_PORT, publicPath),
-
     plugins: [
-      new NamedModulesPlugin(),
       new HotModuleReplacementPlugin(),
-      new NoEmitOnErrorsPlugin(),
       new EnvironmentPlugin({
         NODE_ENV: isDev ? "development" : "production",
         PUBLIC_URL: publicUrl
@@ -117,34 +105,18 @@ module.exports = (env = {}) => {
   };
 
   if (!isDev) {
-    config.entry.app = paths.appIndex;
-    config.output.filename = "static/js/[name].[chunkhash].js";
-    config.output.chunkFilename = "static/js/[name].[chunkhash].chunk.js";
-    config.plugins.push(
-      new CommonsChunkPlugin({
-        name: "vendor",
-        minChunks: ({ resource }) => /node_modules/.test(resource)
-      }),
-      new CommonsChunkPlugin("runtime"),
-      new ModuleConcatenationPlugin(),
-      new UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          // This feature has been reported as buggy a few times, such as:
-          // https://github.com/mishoo/UglifyJS2/issues/1964
-          // We'll wait with enabling it by default until it is more solid.
-          reduce_vars: false
-        },
-        output: {
-          comments: false
-        },
-        sourceMap: true
-      })
-    );
+    config.output.filename = "static/js/app.[chunkhash].js";
+    config.output.chunkFilename = "static/js/[name].[chunkhash].js";
 
     config.plugins = config.plugins.filter(
       e => !(e instanceof HotModuleReplacementPlugin)
     );
+
+    config.optimization = {
+      splitChunks: {
+        chunks: "all"
+      }
+    };
   }
 
   return config;
