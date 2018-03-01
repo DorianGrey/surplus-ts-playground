@@ -7,7 +7,6 @@ if (module.hot) {
   module.hot.accept();
   module.hot.dispose(function() {
     if (currentMainComponent) {
-      //document.body.removeChild(currentMainComponent);
       currentMainComponent.remove();
     }
   });

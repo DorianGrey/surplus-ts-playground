@@ -27,6 +27,6 @@ compiler.run((err, stats) => {
   if (err) {
     throw err;
   } else {
-    console.log(stats.toString());
+    console.log(stats.toString({ colors: true }));
   }
 });

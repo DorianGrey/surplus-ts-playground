@@ -2,7 +2,7 @@
 
 process.env.NODE_ENV = "development";
 
-const WebpackDevServer = require("webpack-dev-server");
+const serve = require("webpack-serve");
 const webpack = require("webpack");
 
 const hostInfo = require("../config/hostInfo");
@@ -23,17 +23,16 @@ try {
   process.exit(1);
 }
 
-const devServer = new WebpackDevServer(compiler, serverConfig(3000, "/"));
-
-devServer.listen(hostInfo.DEFAULT_PORT, hostInfo.HOST, err => {
-  if (err) {
-    return console.log(err);
-  }
+const devServer = serve({
+  compiler,
+  ...serverConfig(3000, "/")
 });
 
-["SIGINT", "SIGTERM"].forEach(function(sig) {
-  process.on(sig, function() {
-    devServer.close();
-    process.exit();
+devServer
+  .then(() => {
+    console.info("Dev-server listening...");
+  })
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
   });
-});

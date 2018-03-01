@@ -1,8 +1,6 @@
 const path = require("path");
 
 const { EnvironmentPlugin } = require("webpack");
-const HotModuleReplacementPlugin = require("webpack/lib/HotModuleReplacementPlugin");
-
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const paths = require("./paths");
@@ -59,11 +57,7 @@ module.exports = (env = {}) => {
   const config = {
     mode: process.env.NODE_ENV || "development",
     entry: {
-      app: [
-        require.resolve("webpack-dev-server/client") + "?/",
-        require.resolve("webpack/hot/dev-server"),
-        paths.appIndex
-      ]
+      app: [paths.appIndex]
     },
     output: {
       path: paths.appBuild,
@@ -99,7 +93,6 @@ module.exports = (env = {}) => {
     devtool: isDev ? "inline-source-map" : "source-map",
 
     plugins: [
-      new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({
         NODE_ENV: isDev ? "development" : "production",
         PUBLIC_URL: publicUrl
@@ -109,17 +102,19 @@ module.exports = (env = {}) => {
   };
 
   if (!isDev) {
-    config.entry.app = config.entry.app.slice(2);
     config.output.filename = "static/js/app.[chunkhash].js";
     config.output.chunkFilename = "static/js/[name].[chunkhash].js";
 
-    config.plugins = config.plugins.filter(
-      e => !(e instanceof HotModuleReplacementPlugin)
-    );
-
     config.optimization = {
       splitChunks: {
-        chunks: "all"
+        cacheGroups: {
+          vendors: {
+            chunks: "all",
+            test: /[\\\/]node_modules[\\\/]/,
+            priority: -10,
+            name: "vendor"
+          }
+        }
       }
     };
   }
