@@ -18,10 +18,11 @@
   },
   "homepage": "https://github.com/DorianGrey/surplus-ts-playground#readme",
   "devDependencies": {
+    "@types/webpack-env": "^1.13.5",
     "compression": "^1.7.2",
     "connect-history-api-fallback": "^1.5.0",
     "fs-extra": "^5.0.0",
-    "html-webpack-plugin": "github:webpack-contrib/html-webpack-plugin",
+    "html-webpack-plugin": "^3.0.3",
     "husky": "^0.14.3",
     "koa-connect": "^2.0.1",
     "lint-staged": "^7.0.0",
