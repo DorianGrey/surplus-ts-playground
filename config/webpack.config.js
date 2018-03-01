@@ -2,6 +2,7 @@ const path = require("path");
 
 const { EnvironmentPlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Stylish = require("webpack-stylish");
 
 const paths = require("./paths");
 const devServerConfig = require("./dev-server.config");
@@ -118,6 +119,8 @@ module.exports = (env = {}) => {
       },
       runtimeChunk: { name: "runtime" }
     };
+
+    config.plugins.push(new Stylish()); // Only use it in production - too noisy for dev.
   }
 
   return config;
