@@ -102,7 +102,7 @@ module.exports = (env = {}) => {
   };
 
   if (!isDev) {
-    config.output.filename = "static/js/app.[chunkhash].js";
+    config.output.filename = "static/js/[name].[chunkhash].js";
     config.output.chunkFilename = "static/js/[name].[chunkhash].js";
 
     config.optimization = {
@@ -115,7 +115,8 @@ module.exports = (env = {}) => {
             name: "vendor"
           }
         }
-      }
+      },
+      runtimeChunk: { name: "runtime" }
     };
   }
 
