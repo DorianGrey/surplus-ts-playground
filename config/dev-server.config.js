@@ -7,7 +7,7 @@ module.exports = function(port, publicPath) {
       publicPath,
       logLevel: "info",
       logTime: true,
-      stats: false
+      stats: "errors-only"
     },
     hot: {
       logLevel: "info",
@@ -16,26 +16,5 @@ module.exports = function(port, publicPath) {
     port,
     logLevel: "info",
     logTime: true
-  };
-
-  return {
-    historyApiFallback: true,
-    clientLogLevel: "none",
-    compress: true,
-    contentBase: paths.appPublic,
-    watchContentBase: true,
-    hot: true,
-    inline: true,
-    stats: false,
-    // host: "::",
-    publicPath,
-    watchOptions: {
-      ignored: /node_modules/
-    },
-    // public: `${publicHost}:${port}`,
-    overlay: {
-      errors: true,
-      warnings: false
-    }
   };
 };

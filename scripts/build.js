@@ -26,5 +26,6 @@ fs.emptyDirSync(paths.appBuild);
 compiler.run((err, stats) => {
   if (err) {
     throw err;
-  } // Stats are printed via "webpack-stylish" plugin.
+  }
+  console.warn(stats.toString({ colors: true }));
 });

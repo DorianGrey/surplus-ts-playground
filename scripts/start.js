@@ -28,11 +28,7 @@ const devServer = serve({
   ...serverConfig(3000, "/")
 });
 
-devServer
-  .then(() => {
-    console.info("Dev-server listening...");
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+devServer.catch(err => {
+  console.error(err);
+  process.exit(1);
+});

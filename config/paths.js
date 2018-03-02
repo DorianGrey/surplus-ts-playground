@@ -15,7 +15,7 @@ module.exports = {
   appBuild: resolveApp("build"),
   appBuildStats: resolveApp("buildStats"),
   appSrc: resolveApp("src"),
-  appIndex: resolveApp("src/index.ts"),
+  appIndex: resolveApp("src/index.tsx"),
   appHtml: resolveApp("public/index.template.html"),
   appGenerated: resolveApp("src/generated"),
   appPackageJson: resolveApp("package.json"),

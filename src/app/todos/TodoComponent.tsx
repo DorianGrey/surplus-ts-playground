@@ -2,20 +2,19 @@
 import * as Surplus from "surplus";
 Surplus; // Expression is a workaround to prevent the module from being dropped ...
 import SArray from "s-array";
-import S, { DataSignal } from "s-js";
+import S from "s-js";
 import data from "surplus-mixin-data";
+
+import { WithDataSignals } from "../util/dataSignalType";
 
 interface TodoContent {
   title: string;
   done: boolean;
 }
 
-interface Todo {
-  title: DataSignal<string>;
-  done: DataSignal<boolean>;
-}
+type Todo = WithDataSignals<TodoContent>;
 
-export function createTestComponent() {
+export function TodoComponent() {
   const makeTodo = (t: TodoContent) =>
     ({
       // our Todo constructor
