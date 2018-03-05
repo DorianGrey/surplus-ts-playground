@@ -161,7 +161,7 @@ module.exports = (env = {}) => {
     },
     output: {
       path: paths.appBuild,
-      filename: "static/js/app.js",
+      filename: "static/js/[name].js",
       chunkFilename: "static/js/[name].js",
       publicPath: publicPath,
       pathinfo: true,
