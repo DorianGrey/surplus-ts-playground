@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/DorianGrey/surplus-ts-playground#readme",
   "devDependencies": {
+    "@types/page": "^1.5.32",
     "@types/webpack-env": "^1.13.5",
     "autoprefixer": "^8.1.0",
     "compression": "^1.7.2",
@@ -46,6 +47,7 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
+    "page": "^1.8.4",
     "s-array": "^0.4.9",
     "s-js": "^0.4.8",
     "surplus": "^0.5.0"

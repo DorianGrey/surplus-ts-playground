@@ -1,3 +1,7 @@
+const history = require("connect-history-api-fallback");
+const convert = require("koa-connect");
+const compress = require("compression");
+
 const paths = require("./paths");
 
 module.exports = function(port, publicPath) {
@@ -16,6 +20,14 @@ module.exports = function(port, publicPath) {
     host: "::",
     port,
     logLevel: "info",
-    logTime: true
+    logTime: true,
+    add: (app, middleware, options) => {
+      const historyOptions = {
+        // ... see: https://github.com/bripkens/connect-history-api-fallback#options
+      };
+
+      app.use(convert(history(historyOptions)));
+      app.use(convert(compress()));
+    }
   };
 };
