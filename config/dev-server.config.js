@@ -13,6 +13,7 @@ module.exports = function(port, publicPath) {
       logLevel: "info",
       logTime: true
     },
+    host: "::",
     port,
     logLevel: "info",
     logTime: true
