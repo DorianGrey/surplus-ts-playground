@@ -5,7 +5,14 @@
   justify-content: space-between;
 
   nav {
+    grid-area: nav;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style: none;
     display: flex;
+    margin: 0;
   }
 
   a {

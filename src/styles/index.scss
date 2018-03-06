@@ -42,6 +42,13 @@ body {
   color: $color-black;
   word-wrap: break-word;
   position: relative;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 
+    "header"
+    "content"
+    "footer"
 }
 
 header {
@@ -55,20 +62,16 @@ header {
 }
 
 main {
+  grid-area: content;
   padding-top: $header-height;
-  padding-bottom: $footer-height;
-  min-height: 100%;
 }
 
 footer {
   height: $footer-height;
   background-color: $color-blacksmoke;
   color: $color-white;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
   width: 100%;
+  grid-area: footer;
 }
 
 a {

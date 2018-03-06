@@ -8,8 +8,14 @@ export function Header() {
     <header id="header">
       <div>TestHeader</div>
       <nav>
-        <a href="/mirror">Mirror</a>
-        <a href="/todos">Todos</a>
+        <ul>
+          <li>
+            <a href="/mirror">Mirror</a>
+          </li>
+          <li>
+            <a href="/todos">Todos</a>
+          </li>
+        </ul>
       </nav>
     </header>
   );
