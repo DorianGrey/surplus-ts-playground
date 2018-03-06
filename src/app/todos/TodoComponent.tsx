@@ -38,14 +38,14 @@ export function TodoComponent() {
     </li>
   );
 
-  const view = (
+  const view = S.root(() => (
     <section>
       <h2>Minimalist ToDos in Surplus</h2>
       <input type="text" fn={data(newTitle)} />
       <a onClick={addTodo}> + </a>
       <ul>{todos.map(todoElem)}</ul>
     </section>
-  );
+  ));
 
   return view;
 }
