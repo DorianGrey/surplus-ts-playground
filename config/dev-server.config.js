@@ -17,7 +17,7 @@ module.exports = function(port, publicPath) {
       logLevel: "info",
       logTime: true
     },
-    host: "::",
+    host: "localhost",
     port,
     logLevel: "info",
     logTime: true,

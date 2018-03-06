@@ -18,18 +18,20 @@ function formatDate(date: Date) {
 }
 
 export function Clock() {
-  const currentDate = S.data<Date>(new Date());
-  const formattedDate = S(() => formatDate(currentDate()));
+  return S(() => {
+    const currentDate = S.data<Date>(new Date());
+    const formattedDate = S(() => formatDate(currentDate()));
 
-  const intervalId = setInterval(() => {
-    currentDate(new Date());
-  }, 1000);
+    const intervalId = setInterval(() => {
+      currentDate(new Date());
+    }, 1000);
 
-  // Clean the interval in case the DOM node is removed.
-  // TODO: Check if this is used correctly...
-  S.cleanup(() => {
-    clearInterval(intervalId);
+    // Clean the interval in case the DOM node is removed.
+    // TODO: Check if this is used correctly...
+    S.cleanup(() => {
+      clearInterval(intervalId);
+    });
+
+    return <div>{formattedDate()}</div>;
   });
-
-  return <div>{formattedDate()}</div>;
 }
