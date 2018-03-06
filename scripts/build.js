@@ -22,10 +22,6 @@ try {
 }
 
 fs.emptyDirSync(paths.appBuild);
-fs.copySync(paths.appPublic, paths.appBuild, {
-  dereference: true,
-  filter: file => file !== paths.appHtml
-});
 
 compiler.run((err, stats) => {
   if (err) {

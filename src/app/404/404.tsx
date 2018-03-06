@@ -1,4 +1,5 @@
 import * as Surplus from "surplus";
+// tslint:disable-next-line:no-unused-expression
 Surplus;
 
 import "./404.scss";

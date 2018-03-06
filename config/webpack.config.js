@@ -3,6 +3,8 @@ const path = require("path");
 const { EnvironmentPlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const paths = require("./paths");
 const devServerConfig = require("./dev-server.config");
@@ -155,6 +157,7 @@ module.exports = (env = {}) => {
   const isDev = process.env.NODE_ENV !== "production";
 
   const config = {
+    bail: !isDev,
     mode: process.env.NODE_ENV || "development",
     entry: {
       app: [paths.appIndex]
@@ -179,7 +182,10 @@ module.exports = (env = {}) => {
               loader: require.resolve("surplus-loader")
             },
             {
-              loader: require.resolve("ts-loader")
+              loader: require.resolve("ts-loader"),
+              options: {
+                transpileOnly: true
+              }
             }
           ]
         },
@@ -193,16 +199,23 @@ module.exports = (env = {}) => {
     },
     devtool: isDev ? "inline-source-map" : "source-map",
 
+    optimization: {
+      noEmitOnErrors: true
+    },
+
     plugins: [
       new EnvironmentPlugin({
         NODE_ENV: isDev ? "development" : "production",
         PUBLIC_URL: publicUrl
       }),
       PLUGIN_HTML(isDev, publicUrl),
-      !isDev &&
-        new ExtractTextPlugin({
-          filename: cssFilename
-        })
+      new ForkTsCheckerWebpackPlugin({
+        watch: paths.appSrc,
+        async: isDev,
+        tslint: paths.appTsLint,
+        tsconfig: paths.appTsConfig,
+        formatter: "codeframe"
+      })
     ].filter(Boolean)
   };
 
@@ -223,6 +236,15 @@ module.exports = (env = {}) => {
       },
       runtimeChunk: { name: "runtime" }
     };
+
+    config.plugins.push(
+      new ExtractTextPlugin({
+        filename: cssFilename
+      }),
+      new CopyWebpackPlugin(["**/*.png", "**/*.webmanifest"], {
+        context: paths.appPublic
+      })
+    );
   }
 
   return config;

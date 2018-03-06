@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as Surplus from "surplus";
+// tslint:disable-next-line:no-unused-expression
 Surplus; // Expression is a workaround to prevent the module from being dropped ...
 import SArray from "s-array";
 import S from "s-js";
@@ -22,13 +23,13 @@ export function TodoComponent() {
       done: S.data(t.done)
     } as Todo);
 
-  const todos = SArray<Todo>([]), // our array of todos
-    newTitle = S.data(""), // title for new todos
-    addTodo = () => {
-      // push new title onto list
-      todos.push(makeTodo({ title: newTitle(), done: false }));
-      newTitle(""); // clear new title
-    };
+  const todos = SArray<Todo>([]); // our array of todos
+  const newTitle = S.data(""); // title for new todos
+  const addTodo = () => {
+    // push new title onto list
+    todos.push(makeTodo({ title: newTitle(), done: false }));
+    newTitle(""); // clear new title
+  };
 
   const todoElem: (t: Todo) => JSX.Element = (todo: Todo) => (
     <li>

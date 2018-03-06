@@ -20,6 +20,8 @@ module.exports = {
   appGenerated: resolveApp("src/generated"),
   appPackageJson: resolveApp("package.json"),
   appPackageLock: resolveApp("package-lock.json"),
+  appTsLint: resolveApp("tslint.json"),
+  appTsConfig: resolveApp("tsconfig.json"),
   publicPath,
   publicUrl
 };
