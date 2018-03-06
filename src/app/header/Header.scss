@@ -1,0 +1,17 @@
+@import "../../styles/colors";
+
+#header {
+  display: flex;
+  justify-content: space-between;
+
+  nav {
+    display: flex;
+  }
+
+  a {
+    color: $color-white;
+    display: block;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

@@ -2,10 +2,8 @@
 import * as Surplus from "surplus";
 Surplus; // Expression is a workaround to prevent the module from being dropped ...
 
+import { Header } from "./header/Header";
+
 export function App(): HTMLElement[] {
-  return [
-    <header>TestHeader</header>,
-    <main id="main" />,
-    <footer>Test footer</footer>
-  ];
+  return [<Header />, <main id="main" />, <footer>Test footer</footer>];
 }
