@@ -71,6 +71,9 @@ footer {
   background-color: $color-blacksmoke;
   color: $color-white;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   grid-area: footer;
 }
 
