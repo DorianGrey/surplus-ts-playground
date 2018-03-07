@@ -1,4 +1,5 @@
 import page from "page";
+import S from "s-js";
 
 import { NotFound } from "./404/404";
 import { Mirror } from "./mirror/Mirror";
@@ -23,9 +24,11 @@ function mount(component: HTMLElement) {
   }
 }
 
-page.redirect("/", "/mirror");
-page("/mirror", () => mount(<Mirror />));
-page("/todos", () => mount(<TodoComponent />));
-page("*", () => mount(<NotFound />));
+S.root(() => {
+  page.redirect("/", "/mirror");
+  page("/mirror", () => mount(<Mirror />));
+  page("/todos", () => mount(<TodoComponent />));
+  page("*", () => mount(<NotFound />));
+});
 
 export default page;
