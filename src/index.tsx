@@ -1,9 +1,7 @@
 import "./styles/index.scss";
 
-import S from "s-js";
-
 import { App } from "./app/App";
-import router from "./app/routing";
+import startRouting from "./app/routing";
 
 let currentMainComponents: HTMLElement[] = [];
 
@@ -15,11 +13,9 @@ if (module.hot) {
   });
 }
 
-S.root(() => {
-  currentMainComponents = App();
-  currentMainComponents.forEach(e => {
-    document.body.appendChild(e);
-  });
-
-  router.start();
+currentMainComponents = App();
+currentMainComponents.forEach(e => {
+  document.body.appendChild(e);
 });
+
+startRouting();

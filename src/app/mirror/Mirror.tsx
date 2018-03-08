@@ -6,7 +6,7 @@ import S from "s-js";
 import { Clock } from "../footer/Clock";
 
 export function Mirror() {
-  return S.root(() => (
+  return S(() => (
     <div>
       <div>I will be a mirror component.</div>
       <Clock />
