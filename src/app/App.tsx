@@ -4,7 +4,8 @@ Surplus; // Expression is a workaround to prevent the module from being dropped 
 
 import { Header } from "./header/Header";
 import { Footer } from "./footer/Footer";
+import { Main } from "./main/Main";
 
 export function App(): HTMLElement[] {
-  return [<Header />, <main id="main" />, <Footer />];
+  return [<Header />, <Main />, <Footer />];
 }

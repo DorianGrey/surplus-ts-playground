@@ -1,9 +1,15 @@
 import "./styles/index.scss";
 
 import { App } from "./app/App";
-import startRouting from "./app/routing";
 
 let currentMainComponents: HTMLElement[] = [];
+
+function renderApp() {
+  currentMainComponents = App();
+  currentMainComponents.forEach(e => {
+    document.body.appendChild(e);
+  });
+}
 
 // Simple and stupid HMR API...
 if (module.hot) {
@@ -13,9 +19,4 @@ if (module.hot) {
   });
 }
 
-currentMainComponents = App();
-currentMainComponents.forEach(e => {
-  document.body.appendChild(e);
-});
-
-startRouting();
+renderApp();
