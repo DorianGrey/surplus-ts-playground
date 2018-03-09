@@ -17,17 +17,12 @@ function formatDate(date: Date) {
   return dateFormatter.format(date);
 }
 
-let ID = 0;
-
 export function Clock() {
   const currentDate = S.data<Date>(new Date());
   const formattedDate = S(() => formatDate(currentDate()));
 
   return S(() => {
-    const myId = ID;
-    ID++;
     const intervalId = setInterval(() => {
-      console.warn(`Clock id=${myId} ticking...`);
       currentDate(new Date());
     }, 1000);
 

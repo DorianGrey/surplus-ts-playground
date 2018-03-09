@@ -10,7 +10,6 @@ import { Mirror } from "../mirror/Mirror";
 import { TodoComponent } from "../todos/TodoComponent";
 
 const viewFactory = S.data(() => <Loading />);
-const view = S.root(() => S(() => viewFactory()()));
 
 type PageCreationCallback = () => HTMLElement;
 
@@ -28,5 +27,7 @@ configureRoute("*", () => <NotFound />);
 
 export function Main() {
   page.start();
-  return <main id="main">{view()}</main>;
+  return S.root(() => {
+    return <main id="main">{viewFactory()()}</main>;
+  });
 }
