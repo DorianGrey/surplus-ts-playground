@@ -3,6 +3,13 @@ import * as Surplus from "surplus";
 Surplus;
 import S from "s-js";
 
+import { Clock } from "../footer/Clock";
+
 export function Mirror() {
-  return S.root(() => <div>I will be a mirror component.</div>);
+  return S(() => (
+    <div>
+      <div>I will be a mirror component.</div>
+      <Clock />
+    </div>
+  ));
 }

@@ -39,7 +39,7 @@ export function TodoComponent() {
     </li>
   );
 
-  const view = S.root(() => (
+  const view = S(() => (
     <section>
       <h2>Minimalist ToDos in Surplus</h2>
       <input type="text" fn={data(newTitle)} />
