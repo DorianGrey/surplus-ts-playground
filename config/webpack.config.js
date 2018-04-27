@@ -2,7 +2,7 @@ const path = require("path");
 
 const { EnvironmentPlugin } = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
@@ -57,15 +57,6 @@ const shouldUseRelativeAssetPaths = paths.publicPath === "./";
 // Note: defined here because it will be used more than once.
 const cssFilename = "static/css/[name].[contenthash:8].css";
 
-// ExtractTextPlugin expects the build output to be flat.
-// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
-// However, our output is structured with css, js and media folders.
-// To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = shouldUseRelativeAssetPaths
-  ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split("/").length).join("../") }
-  : {};
-
 const POSTCSS_PLUGINS = () => [
   require("postcss-flexbugs-fixes"),
   require("autoprefixer")({
@@ -93,7 +84,7 @@ const RULE_SCSS = function(isDev) {
   // "css" loader resolves paths in CSS and adds assets as dependencies.
   // "style" loader normally turns CSS into JS modules injecting <style>,
   // but unlike in development configuration, we do something different.
-  // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
+  // `MiniCssExtractPlugin` first applies the "postcss" and "css" loaders
   // (second argument), then grabs the result CSS and puts it into a
   // separate file in our build process. This way we actually ship
   // a single CSS file in production instead of JS code injecting <style>
@@ -132,24 +123,12 @@ const RULE_SCSS = function(isDev) {
     }
   ];
 
-  const result = { test: /\.scss$/ };
-  const styleLoader = require.resolve("style-loader");
-
-  if (isDev) {
-    result.use = [styleLoader].concat(scssLoaderChain);
-  } else {
-    result.use = ExtractTextPlugin.extract(
-      Object.assign(
-        {
-          fallback: styleLoader,
-          use: scssLoaderChain
-        },
-        extractTextPluginOptions
-      )
-    );
-  }
-
-  return result;
+  return {
+    test: /\.scss$/,
+    use: [
+      isDev ? require.resolve("style-loader") : MiniCssExtractPlugin.loader
+    ].concat(scssLoaderChain)
+  };
 };
 
 // TODO: Need a prod version!
@@ -238,8 +217,9 @@ module.exports = (env = {}) => {
     };
 
     config.plugins.push(
-      new ExtractTextPlugin({
-        filename: cssFilename
+      new MiniCssExtractPlugin({
+        filename: cssFilename,
+        chunkFilename: cssFilename
       }),
       new CopyWebpackPlugin(["**/*.png", "**/*.webmanifest"], {
         context: paths.appPublic
